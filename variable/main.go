@@ -4,7 +4,11 @@ import "fmt"
 
 func main() {
 	var prenom string
-
+boolvar:
+	if boolvar {
+		fmt.Println("varbool")
+		boolvar
+	}
 	var nom string
 	prenom = "Djibril"
 	nom = "Thiongane"
