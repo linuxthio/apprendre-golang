@@ -93,7 +93,7 @@ func main() {
 	}
 	
 	var o Pointd
-	o.c = 1
+	o.c = 0
 	o.x = 5
 	o.y = 5
 
@@ -131,6 +131,6 @@ func main() {
 		if x > gg.c-1 {
 			x = 0
 		}
-		time.Sleep(1000000000)
+		time.Sleep(100000000)
 	}
 }
