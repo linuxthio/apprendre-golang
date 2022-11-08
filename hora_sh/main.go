@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"math"
 	"os"
 	"os/exec"
 	"strings"
@@ -25,6 +24,11 @@ type Pointd struct {
 	y int
 }
 
+func (p *Pointd) setxy(c,a,b int){
+	p.x=a
+	p.y=b
+	p.c=c
+}
 func (g Grille) aff() {
 	pt := []string{".", "o", "-"}
 	a := 0
@@ -32,10 +36,10 @@ func (g Grille) aff() {
 		fmt.Printf("%d\t", a)
 		for c := range g.grille[l] {
 			switch g.grille[l][c] {
-			case 0:
+			case -1:
 				fmt.Print(pt[0])
-			case 1:
-				fmt.Print(pt[1])
+			// case 1:
+			// 	fmt.Print(pt[1])
 			default:
 				ss:=fmt.Sprintf("%v",g.grille[l][c])
 				fmt.Print(ss)
@@ -50,7 +54,7 @@ func (g Grille) aff() {
 func (g *Grille) erase() {
 	for c := range g.grille {
 		for i := range g.grille[c] {
-			g.grille[c][i] = 0
+			g.grille[c][i] = -1
 		}
 	}
 }
@@ -93,19 +97,28 @@ func main() {
 		nom: "g",
 		c:   20,
 		l:   10,
-		pts: []Pointd{{0, 0, 0}},
+		pts: []Pointd{{-1, 0, 0}},
 		grille: [][]int{
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			// {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		},
 	}
 
@@ -113,34 +126,50 @@ func main() {
 	o.c = 0
 	o.x = 5
 	o.y = 5
-
-	gg.pts = append(gg.pts, o)
-
+	// gg.pts = append(gg.pts, o)
+	
 	var p Pointd
 	p.c = 1
 	p.x = 8
 	p.y = 4
+	
+	// gg.pts = append(gg.pts, p)
 
-	gg.pts = append(gg.pts, p)
-	x := 0
-	teta := 0.0
+	var pth0 Pointd
+	var pth1 Pointd
+	
+	var ptm0 Pointd
+	var ptm1 Pointd
+	
+	var pts0 Pointd
+	var pts1 Pointd
+	
+	gg.pts = append(gg.pts, pth0)
+	gg.pts = append(gg.pts, pth1)
+	
+	gg.pts = append(gg.pts, ptm0)
+	gg.pts = append(gg.pts, ptm1)
+
+	gg.pts = append(gg.pts, pts0)
+	gg.pts = append(gg.pts, pts1)
+	
+	// tb:=[]int{2,3,4}
+	// x := 0
+	// teta := 0.0
 	for {
-
+		
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
 		if err := cmd.Run(); err != nil {
 			log.Fatal(err)
 		}
 		h, m, s := gethora()
+		// fmt.Println("tableau : ",tb[0:len(tb)-1],tb)
 		// display hour minute and second
+		// fmt.Println(gg.grille)
 		
-
-		// pm0 := ""
-		// pm1 := ""
-
-		// ps0 := ""
-		// ps1 := ""
-		// ph0 := ""
+		fmt.Println("Horloge : D Thiongane")
+		fmt.Printf("\n\n")
 		ph1 := ""
 		hh := fmt.Sprintf("%v", h)
 		sh := strings.Split(hh, "")
@@ -178,91 +207,65 @@ func main() {
 		}
 
 
-		var pth0 Pointd
-		var pth1 Pointd
+		xhora,yhora:= 5,9
 
-		var ptm0 Pointd
-		var ptm1 Pointd
-		
-		var pts0 Pointd
-		var pts1 Pointd
+		inth0,err:=strconv.Atoi(ph0)
 
-		xhora,yhora:= 3,9
-
-		inth0,err:=strconv.ParseInt(ph0,0,8)
-
-		if err!=nil{
-			pth0.c=int(inth0)
-			pth0.x=xhora
-			pth0.y=yhora
-			gg.pts = append(gg.pts, pth0)
+		if err==nil{
+			gg.pts[1].setxy(inth0,xhora,yhora)
 		}
 
-		inth1,err:=strconv.ParseInt(ph1,0,8)
+		inth1,err1:=strconv.Atoi(ph1)
 
-		if err!=nil{
-			pth1.c=int(inth1)
-			pth1.x=xhora+1
-			pth1.y=yhora
-			gg.pts = append(gg.pts, pth1)
+		if err1==nil{
+			gg.pts[2].setxy(inth1,xhora+1,yhora)
 		}
-		intm0,err:=strconv.ParseInt(pm0,0,8)
+		intm0,err2:=strconv.Atoi(pm0)
 
-		if err!=nil{
-			ptm0.c=int(intm0)
-			ptm0.x=xhora+2
-			ptm0.y=yhora
-			gg.pts = append(gg.pts, ptm0)
+		if err2==nil{
+			gg.pts[3].setxy(intm0,xhora+3,yhora)
 		}
 
-		intm1,err:=strconv.ParseInt(pm1,0,8)
+		intm1,err3:=strconv.Atoi(pm1)
 
-		if err!=nil{
-			ptm1.c=int(intm1)
-			ptm1.x=xhora+3
-			ptm1.y=yhora
-			gg.pts = append(gg.pts, ptm1)
+		if err3==nil{
+			gg.pts[4].setxy(intm1,xhora+4,yhora)
 		}
 
-		ints0,err:=strconv.ParseInt(ps0,0,8)
+		ints0,err4:=strconv.Atoi(ps0)
 
-		if err!=nil{
-			pts0.c=int(ints0)
-			pts0.x=xhora+4
-			pts0.y=yhora
-			gg.pts = append(gg.pts, pts0)
+		if err4==nil{
+			gg.pts[5].setxy(ints0,xhora+6,yhora)
 		}
 
-		ints1,err:=strconv.ParseInt(ps1,0,8)
+		ints1,err5:=strconv.Atoi(ps1)
 
-		if err!=nil{
-			pts1.c=int(ints1)
-			pts1.x=xhora+5
-			pts1.y=yhora
-			gg.pts = append(gg.pts, pts1)
+		if err5==nil{
+			gg.pts[6].setxy(ints1,xhora+7,yhora)
+			
 		}
 
-		fmt.Println("h = ", ph0," h1", ph1)
-		fmt.Println("m = ", pm0," m1", pm1)
-		fmt.Println("s = ", ps0," s1", ps1)
-		fmt.Println(h, m, s)
+		// fmt.Println("h = ", ph0," h1", ph1)
+		// fmt.Println("m = ", pm0," m1", pm1)
+		// fmt.Println("s = ", ps0," s1", ps1)
+		// fmt.Println(h, m, s)
 		gg.erase()
-		gg.move(1, x, 1)
-		r := 4.0
-		teta = teta + 0.5
-		a := 4 + r*math.Cos(teta)
-		b := 4 + r*math.Sin(teta)
+		// gg.move(1, x, 1)
+		// r := 4.0
+		// teta = teta + 0.5
+		// a := 4 + r*math.Cos(teta)
+		// b := 4 + r*math.Sin(teta)
 
-		gg.move(2, int(a), int(b))
+		// gg.move(2, int(a), int(b))
 
 		gg.remplir()
 		gg.aff()
-		x = x + 1
-		if x > gg.c-1 {
-			x = 0
-		}
+		// x = x + 1
+		// if x > gg.c-1 {
+		// 	x = 0
+		// }
 
-		fmt.Println(gg.pts)
-		time.Sleep(100000000)
+		// fmt.Println(gg.pts)
+		time.Sleep(1000000000)
 	}
 }
